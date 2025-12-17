@@ -15,5 +15,5 @@ func main() {
 
 func handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "HALO DARI GUI JENKINS!\n")
-    fmt.Fprintf(w, "Sukses Deploy dan CI/CD via GIT!\n")
+    fmt.Fprintf(w, "Sukses Deploy dan CI/CD via git secara otomatis!\n")
 }
