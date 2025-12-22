@@ -2,7 +2,8 @@ pipeline {
     agent any
     environment {
         // Mengambil token dari dompet Jenkins dan menyimpannya sebagai variable lingkungan
-        SNYK_TOKEN = credentials('snyk-api-token')
+        // SNYK_TOKEN = credentials('snyk-api-token')
+        SNYK_TOKEN = credentials('SNYK-ANOM')
     }
     stages {
         stage('Build Image') {
