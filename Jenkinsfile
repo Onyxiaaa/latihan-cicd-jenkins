@@ -23,6 +23,16 @@ pipeline {
             }
         }
 
+        stage('Test-SNYK') {
+          steps {
+            echo 'Testing...'
+            snykSecurity(
+              snykInstallation: 'snyk@latest',
+              snykTokenId: SNYK_TOKEN,
+            )
+          }
+        }
+
         stage('Security Scan (Snyk)') {
             steps {
                 script {
