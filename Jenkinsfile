@@ -48,7 +48,7 @@ pipeline {
                     // JALANKAN ZAP:
                     // Tambahkan parameter -u 0 (run as root) jika masih gagal, 
                     // tapi trik chmod di atas biasanya sudah cukup.
-                    sh 'docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://ip-aplikasi-anda:3000 -r zap_report.html || true'
+                    sh 'docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://34.128.85.228:3000 -r zap_report.html || true'
                 }
             }
         }   
