@@ -39,18 +39,23 @@ pipeline {
         stage('DAST Scan (OWASP ZAP)') {
             steps {
                 script {
-                    // Jalankan ZAP dalam container, scan target, lalu mati
-                    // -t: Target URL
-                    // -r: Nama file laporan
-                    // JANGAN LUPA: Ganti 'ip-aplikasi-anda' dengan IP Public atau Internal VM Anda
-                    sh 'docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://34.128.85.228:3000 -r zap_report.html || true'
+                    // FIX PERMISSIONS:
+                    // 1. Buat file kosong dulu biar owned by Jenkins user
+                    sh 'touch zap_report.html'
+                    // 2. Beri izin baca/tulis ke semua user (biar container docker bisa nulis)
+                    sh 'chmod 777 zap_report.html'
+                    
+                    // JALANKAN ZAP:
+                    // Tambahkan parameter -u 0 (run as root) jika masih gagal, 
+                    // tapi trik chmod di atas biasanya sudah cukup.
+                    sh 'docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://ip-aplikasi-anda:3000 -r zap_report.html || true'
                 }
             }
         }   
         
         stage('Publish Report') {
             steps {
-                // Menampilkan laporan di Dashboard Jenkins
+                // Pastikan Plugin "HTML Publisher" sudah diinstall sebelum jalanin ini
                 publishHTML (target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
