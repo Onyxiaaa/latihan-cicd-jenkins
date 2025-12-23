@@ -33,23 +33,5 @@ pipeline {
             )
           }
         }
-
-        stage('Security Scan (Snyk)') {
-            steps {
-                script {
-                    // 1. Scan Dependencies (Library pihak ketiga)
-                    // --severity-threshold=high artinya cuma lapor kalau ada bahaya TINGGI
-                    sh 'snyk test --severity-threshold=high || true' 
-                    
-                    // Catatan: "|| true" di akhir berguna agar Pipeline TIDAK BERHENTI/GAGAL 
-                    // meskipun ketemu virus. Kalau mau pipeline gagal jika ada virus, hapus "|| true".
-
-                    echo 'Scanning Docker Image...'
-                    // 2. Scan Docker Image (Ganti nama image sesuai project Anda)
-                    // Pastikan image sudah di-build sebelumnya
-                    // sh 'snyk container test nama-image-anda:latest || true'
-                }
-            }
-        }
     }
 }
