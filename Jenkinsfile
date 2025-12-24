@@ -48,10 +48,17 @@ pipeline {
                     // JALANKAN ZAP:
                     // Tambahkan parameter -u 0 (run as root) jika masih gagal, 
                     // tapi trik chmod di atas biasanya sudah cukup.
-                    sh 'docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://34.128.85.228:3000 -r zap_report.html || true'
+                    sh 'docker run --rm -v $(pwd):/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t http://34.101.251.163:3000 -r zap_report.html || true'
                 }
             }
-        }   
+        }
+
+        stage('Nuclei Scan') {
+            steps {
+            // Scan target dan simpan hasil ke file teks
+            sh 'docker run --rm projectdiscovery/nuclei:latest -u http://34.101.251.163:3000 -o nuclei_report.txt'
+            }
+        }
         
         stage('Publish Report') {
             steps {
